@@ -7,7 +7,11 @@ router.post('/register', async (req, res, next) => {
   try {
     const {username, password} = req.body
     const user = await Users.findBy({username}).first()
-
+    if (username.length < 1) {
+      return res.status(409).json({
+        message: "Must have a username with a length more than 1"
+      })
+    }
     if(user) {
       return res.status(409).json({
         message: "Username is already in use",
