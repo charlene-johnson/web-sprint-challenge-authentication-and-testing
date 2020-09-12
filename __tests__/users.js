@@ -44,6 +44,12 @@ describe("User authentication testing", () => {
         expect(res.type).toBe("application/json")
         expect(res.body.message).toBe("Welcome Char!")
     })
+    it("GET /api/jokes- Error when not logged in", async () => {
+        const res = await supertest(server)
+        .get("/api/jokes")
+        expect(res.statusCode).toBe(401)
+    })
+
     it("GET /api/jokes", async () => {
         const res = await supertest(server)
         .get("/api/jokes")
@@ -51,9 +57,5 @@ describe("User authentication testing", () => {
         expect(res.type).toBe("application/json")
         expect(res.body.length).toBeGreaterThanOrEqual(6)
     })
-    it("GET /api/jokes- Error when not logged in", async () => {
-        const res = await supertest(server)
-        .get("/api/jokes")
-        expect(res.statusCode).toBe(401)
-    })
+    
 })
