@@ -34,6 +34,7 @@ describe("User authentication testing", () => {
             .send({username:"Char", password: "123456"})
         expect(res.statusCode).toBe(200)
         expect(res.type).toBe("application/json")
+        expect(res.body.message).toBe("Welcome Char!")
     })
     it("POST /api/auth/login-Error when using the wrong login", async () => {
         const res = await supertest(server)
@@ -41,5 +42,6 @@ describe("User authentication testing", () => {
             .send({username:"Cha", password: "1234"})
         expect(res.statusCode).toBe(401)
         expect(res.type).toBe("application/json")
+        expect(res.body.message).toBe("You shall not pass!")
     })
 })
