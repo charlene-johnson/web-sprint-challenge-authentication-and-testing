@@ -49,7 +49,6 @@ describe("User authentication testing", () => {
         .get("/api/jokes")
         expect(res.statusCode).toBe(401)
     })
-
     it("GET /api/jokes", async () => {
         const res = await supertest(server)
         .get("/api/jokes")
