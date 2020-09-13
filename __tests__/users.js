@@ -27,8 +27,7 @@ describe("User authentication testing", () => {
         expect(res.type).toBe("application/json")
         expect(res.body.username).toBe("Char")
     })
-
-       it("POST /api/auth/login-Error when using the wrong login", async () => {
+    it("POST /api/auth/login-Error when using the wrong login", async () => {
         const res = await supertest(server)
             .post("/api/auth/login")
             .send({username:"Cha", password: "1234"})
@@ -49,12 +48,16 @@ describe("User authentication testing", () => {
         .get("/api/jokes")
         expect(res.statusCode).toBe(401)
     })
-    it("GET /api/jokes", async () => {
+    it("GET /api/jokes after login", async () => {
         const res = await supertest(server)
-        .get("/api/jokes")
-        expect(res.statusCode).toBe(200)
-        expect(res.type).toBe("application/json")
-        expect(res.body.length).toBeGreaterThanOrEqual(6)
+            .post("/api/auth/login")
+            .send({username:"Char", password:"123456"})
+        const [cookie] = res.headers["set-cookie"]
+        const res2 = await supertest(server)
+            .get("/api/jokes")
+            .set("Cookie", cookie)
+        expect(res2.statusCode).toBe(200)
+        expect(res2.type).toBe("application/json")
+        expect(res2.body.length).toBeGreaterThanOrEqual(6)
     })
-    
 })
